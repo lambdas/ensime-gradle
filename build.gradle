@@ -1,14 +1,9 @@
 apply plugin: "scala"
 apply plugin: "maven-publish"
 apply plugin: "java-gradle-plugin"
-apply plugin: "com.github.lambdas.ensimegradle"
 
 group "com.github.lambdas"
 version "0.0.1"
-
-ext {
-    scalaMajor = "2.12"
-}
 
 repositories {
     jcenter()
@@ -45,17 +40,7 @@ gradlePlugin {
     }
 }
 
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.github.lambdas:ensime-gradle:0.0.1'
-    }
-}
-
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = ["-Ypartial-unification"]
 }
+
