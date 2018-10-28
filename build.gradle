@@ -1,0 +1,61 @@
+apply plugin: "scala"
+apply plugin: "maven-publish"
+apply plugin: "java-gradle-plugin"
+apply plugin: "com.github.lambdas.ensimegradle"
+
+group "com.github.lambdas"
+version "0.0.1"
+
+ext {
+    scalaMajor = "2.12"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.scala-lang:scala-library:2.12.7"
+    compile "ch.qos.logback:logback-classic:1.2.3"
+    compile "org.typelevel:cats-core_2.12:1.4.0"
+    compile gradleApi()
+    compile localGroovy()
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.additionalParameters = ["-Ypartial-unification"]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId "com.github.lambdas"
+            artifactId "ensime-gradle"
+            version "0.0.1"
+        }
+    }
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = "com.github.lambdas.ensime-gradle"
+            implementationClass = "com.github.lambdas.ensimegradle.EnsimeGradlePlugin"
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.github.lambdas:ensime-gradle:0.0.1'
+    }
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.additionalParameters = ["-Ypartial-unification"]
+}
